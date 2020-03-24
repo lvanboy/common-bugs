@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     reverse() {
-      this.title
+      return this.title
         .split("")
         .reverse()
         .join("");
@@ -26,7 +26,7 @@ export default {
   },
   beforeCreate() {
     console.log(`beforeCreate->data:${this.title}`);
-    console.log(`beforeCreate->methods:${this.reverse()}`);
+    console.log(`beforeCreate->methods:${this.reverse}`);
     console.log(`beforeCreate->computed:${this.desc}`);
   },
   created() {
