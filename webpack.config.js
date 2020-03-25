@@ -1,11 +1,10 @@
 const path = require('path');
+require('babel-polyfill')
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: 'development',
-    entry: {
-        app: "./Vue/index.js"
-    },
+    entry: ['babel-polyfill','./Vue/index.js'],
     output: {
         filename: "bundle.js",
         path: path.resolve(__dirname, 'dist')

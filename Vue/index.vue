@@ -1,68 +1,67 @@
 <template>
   <div id="app">
     <p>vue父子生命周期导致的异步数据渲染问题</p>
+    <Child :data="data" />
   </div>
 </template>
 <script >
+import Child from "./child.vue";
 export default {
+  components: {
+    Child
+  },
   data() {
     return {
-      title: "lifecycle",
-      vue: "i am vue"
+      data: []
     };
   },
   methods: {
-    reverse() {
-      return this.title
-        .split("")
-        .reverse()
-        .join("");
+    getData() {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          let data = { res: [{ a: 1 }, { b: 1 }] };
+          resolve(data);
+        }, 3000);
+      });
     }
+    // async loadData() {
+    //   this.data = await this.getData();
+    // }
   },
   computed: {
     desc: function() {
       return `${this.title}-${this.vue}`;
     }
   },
+  my() {
+    console.log("my");
+  },
   beforeCreate() {
-    console.log(`beforeCreate->data:${this.title}`);
-    console.log(`beforeCreate->methods:${this.reverse}`);
-    console.log(`beforeCreate->computed:${this.desc}`);
+    console.log(`beforeCreate->data:${JSON.stringify(this.data)}`);
   },
   created() {
-    console.log(`created->data:${this.title}`);
-    console.log(`created->methods:${this.reverse()}`);
-    console.log(`created->computed:${this.desc}`);
+    // this.loadData();
+    console.log(`created->data:${JSON.stringify(this.data)}`);
   },
   beforeMount() {
-    console.log(`beforeMount->data:${this.title}`);
-    console.log(`beforeMount->methods:${this.reverse()}`);
-    console.log(`beforeMount->computed:${this.desc}`);
+    console.log(`beforeMount->data:${JSON.stringify(this.data)}`);
   },
-  mounted() {
-    console.log(`mounted->data:${this.title}`);
-    console.log(`mounted->methods:${this.reverse()}`);
-    console.log(`mounted->computed:${this.desc}`);
+  async mounted() {
+    let data = await this.getData();
+    this.data = data.res;
+    console.log(`mounted->data:${JSON.stringify(this.data)}`);
   },
   beforeUpdate() {
-    console.log(`beforeUpdate->data:${this.title}`);
-    console.log(`beforeUpdate->methods:${this.reverse()}`);
-    console.log(`beforeUpdate->computed:${this.desc}`);
+    console.log(`beforeUpdate->data:${JSON.stringify(this.data)}`);
   },
   updated() {
-    console.log(`updated->data:${this.title}`);
-    console.log(`updated->methods:${this.reverse()}`);
-    console.log(`updated->computed:${this.desc}`);
+    console.log(`updated->data:${JSON.stringify(this.data)}`);
   },
   beforeDestroy() {
-    console.log(`beforeDestroy->data:${this.title}`);
-    console.log(`beforeDestroy->methods:${this.reverse()}`);
-    console.log(`beforeDestroy->computed:${this.desc}`);
+    console.log(`beforeDestroy->data:${JSON.stringify(this.data)}`);
   },
   destroyed() {
-    console.log(`destroyed->data:${this.title}`);
-    console.log(`destroyed->methods:${this.reverse()}`);
-    console.log(`destroyed->computed:${this.desc}`);
+    console.log(`destroyed->data:${JSON.stringify(this.data)}`);
   }
 };
 </script>
